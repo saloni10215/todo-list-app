@@ -16,13 +16,29 @@ function updateEmptyState() {
     }
 }
 
+// Save all tasks
+function saveTasks() {
+    const tasks = [];
+
+    document.querySelectorAll("#taskList li").forEach(li => {
+        tasks.push({
+            text: li.dataset.task,
+            completed: li.classList.contains("completed")
+        });
+    });
+
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
 // Load saved tasks
 window.onload = function () {
 
     let savedTasks =
         JSON.parse(localStorage.getItem("tasks")) || [];
 
-    savedTasks.forEach(task => addTaskToUI(task));
+    savedTasks.forEach(task => {
+        addTaskToUI(task.text, task.completed);
+    });
 
     updateTaskCounter();
     updateEmptyState();
@@ -35,17 +51,9 @@ button.addEventListener("click", function () {
 
     if (task !== "") {
 
-        addTaskToUI(task);
+        addTaskToUI(task, false);
 
-        let savedTasks =
-            JSON.parse(localStorage.getItem("tasks")) || [];
-
-        savedTasks.push(task);
-
-        localStorage.setItem(
-            "tasks",
-            JSON.stringify(savedTasks)
-        );
+        saveTasks();
 
         input.value = "";
 
@@ -63,27 +71,37 @@ input.addEventListener("keypress", function (event) {
 
 });
 
-function addTaskToUI(task) {
+function addTaskToUI(task, completed = false) {
 
     const li = document.createElement("li");
 
+    li.dataset.task = task;
     li.textContent = task;
+
+    if (completed) {
+        li.classList.add("completed");
+        li.style.textDecoration = "line-through";
+        li.style.opacity = "0.6";
+    }
 
     // Complete / Undo
     li.addEventListener("click", function () {
 
-        if (li.style.textDecoration === "line-through") {
+        li.classList.toggle("completed");
 
-            li.style.textDecoration = "none";
-            li.style.opacity = "1";
-
-        } else {
+        if (li.classList.contains("completed")) {
 
             li.style.textDecoration = "line-through";
             li.style.opacity = "0.6";
 
+        } else {
+
+            li.style.textDecoration = "none";
+            li.style.opacity = "1";
+
         }
 
+        saveTasks();
     });
 
     // Edit Button
@@ -95,28 +113,14 @@ function addTaskToUI(task) {
 
         e.stopPropagation();
 
-        const newTask = prompt("Edit task:", task);
+        const newTask = prompt("Edit task:", li.dataset.task);
 
         if (newTask && newTask.trim() !== "") {
 
-            let savedTasks =
-                JSON.parse(localStorage.getItem("tasks")) || [];
-
-            const index = savedTasks.indexOf(task);
-
-            if (index !== -1) {
-
-                savedTasks[index] = newTask;
-
-                localStorage.setItem(
-                    "tasks",
-                    JSON.stringify(savedTasks)
-                );
-            }
-
-            task = newTask;
-
+            li.dataset.task = newTask;
             li.childNodes[0].textContent = newTask;
+
+            saveTasks();
         }
     });
 
@@ -131,16 +135,7 @@ function addTaskToUI(task) {
 
         li.remove();
 
-        let savedTasks =
-            JSON.parse(localStorage.getItem("tasks")) || [];
-
-        savedTasks =
-            savedTasks.filter(t => t !== task);
-
-        localStorage.setItem(
-            "tasks",
-            JSON.stringify(savedTasks)
-        );
+        saveTasks();
 
         updateTaskCounter();
         updateEmptyState();
