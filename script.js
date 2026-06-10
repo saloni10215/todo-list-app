@@ -3,6 +3,7 @@ const input = document.getElementById("taskInput");
 const taskList = document.getElementById("taskList");
 const taskCounter = document.getElementById("taskCounter");
 const emptyMessage = document.getElementById("emptyMessage");
+const darkModeBtn = document.getElementById("darkModeBtn");
 
 function updateTaskCounter() {
     taskCounter.textContent = `Total Tasks: ${taskList.children.length}`;
@@ -42,6 +43,12 @@ window.onload = function () {
 
     updateTaskCounter();
     updateEmptyState();
+
+    // Load Dark Mode
+    if (localStorage.getItem("darkMode") === "enabled") {
+        document.body.classList.add("dark-mode");
+        darkModeBtn.textContent = "☀️ Light Mode";
+    }
 };
 
 // Add task
@@ -67,6 +74,34 @@ input.addEventListener("keypress", function (event) {
 
     if (event.key === "Enter") {
         button.click();
+    }
+
+});
+
+// Dark Mode Toggle
+darkModeBtn.addEventListener("click", function () {
+
+    document.body.classList.toggle("dark-mode");
+
+    if (document.body.classList.contains("dark-mode")) {
+
+        localStorage.setItem(
+            "darkMode",
+            "enabled"
+        );
+
+        darkModeBtn.textContent =
+            "☀️ Light Mode";
+
+    } else {
+
+        localStorage.setItem(
+            "darkMode",
+            "disabled"
+        );
+
+        darkModeBtn.textContent =
+            "🌙 Dark Mode";
     }
 
 });
