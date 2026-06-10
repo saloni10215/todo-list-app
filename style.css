@@ -16,20 +16,23 @@ body {
 
 .container {
     width: 550px;
-    background: #ffffff;
-    border-radius: 20px;
+    background: white;
     padding: 30px;
-    box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.05),
-        0 12px 30px rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
 }
 
 h1 {
     text-align: center;
     color: #1d1d1f;
-    margin-bottom: 25px;
-    font-size: 30px;
-    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+#taskCounter {
+    text-align: center;
+    color: #6b7280;
+    margin-bottom: 20px;
+    font-size: 14px;
 }
 
 .input-section {
@@ -41,31 +44,27 @@ h1 {
 input {
     flex: 1;
     padding: 14px;
-    border: 1px solid #d2d2d7;
+    border: 1px solid #d1d5db;
     border-radius: 12px;
-    background: #fbfbfd;
     font-size: 15px;
-    color: #1d1d1f;
 }
 
 input:focus {
     outline: none;
-    border-color: #0071e3;
+    border-color: #2563eb;
 }
 
 .input-section button {
-    background: #0071e3;
+    background: #2563eb;
     color: white;
     border: none;
-    padding: 14px 18px;
+    padding: 14px 20px;
     border-radius: 12px;
     cursor: pointer;
-    font-weight: 500;
-    transition: 0.2s;
 }
 
 .input-section button:hover {
-    background: #005ecb;
+    background: #1d4ed8;
 }
 
 ul {
@@ -82,36 +81,20 @@ li {
     align-items: center;
     color: #111827;
 }
-li:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-}
 
 li button {
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 8px 12px;
-    cursor: pointer;
     color: white;
-    font-size: 13px;
-    font-weight: 500;
-    margin-left: 6px;
-    transition: 0.2s;
+    cursor: pointer;
+    margin-left: 8px;
 }
 
 li button:first-of-type {
     background: #6b7280;
-
-}
-
-li button:first-of-type:hover {
-    background: #28a745;
 }
 
 li button:last-of-type {
     background: #374151;
-}
-
-li button:last-of-type:hover {
-    background: #e02d22;
 }
