@@ -2,20 +2,30 @@ const button = document.querySelector("button");
 const input = document.getElementById("taskInput");
 const taskList = document.getElementById("taskList");
 const taskCounter = document.getElementById("taskCounter");
+const emptyMessage = document.getElementById("emptyMessage");
 
 function updateTaskCounter() {
-    taskCounter.textContent =
-        `Total Tasks: ${taskList.children.length}`;
+    taskCounter.textContent = `Total Tasks: ${taskList.children.length}`;
+}
+
+function updateEmptyState() {
+    if (taskList.children.length === 0) {
+        emptyMessage.style.display = "block";
+    } else {
+        emptyMessage.style.display = "none";
+    }
 }
 
 // Load saved tasks
 window.onload = function () {
+
     let savedTasks =
         JSON.parse(localStorage.getItem("tasks")) || [];
 
     savedTasks.forEach(task => addTaskToUI(task));
 
     updateTaskCounter();
+    updateEmptyState();
 };
 
 // Add task
@@ -40,6 +50,7 @@ button.addEventListener("click", function () {
         input.value = "";
 
         updateTaskCounter();
+        updateEmptyState();
     }
 });
 
@@ -75,7 +86,7 @@ function addTaskToUI(task) {
 
     });
 
-    // Edit button
+    // Edit Button
     const editBtn = document.createElement("button");
 
     editBtn.textContent = "Edit";
@@ -84,28 +95,18 @@ function addTaskToUI(task) {
 
         e.stopPropagation();
 
-        const newTask = prompt(
-            "Edit task:",
-            task
-        );
+        const newTask = prompt("Edit task:", task);
 
-        if (
-            newTask &&
-            newTask.trim() !== ""
-        ) {
+        if (newTask && newTask.trim() !== "") {
 
             let savedTasks =
-                JSON.parse(
-                    localStorage.getItem("tasks")
-                ) || [];
+                JSON.parse(localStorage.getItem("tasks")) || [];
 
-            const index =
-                savedTasks.indexOf(task);
+            const index = savedTasks.indexOf(task);
 
             if (index !== -1) {
 
-                savedTasks[index] =
-                    newTask;
+                savedTasks[index] = newTask;
 
                 localStorage.setItem(
                     "tasks",
@@ -115,14 +116,12 @@ function addTaskToUI(task) {
 
             task = newTask;
 
-            li.childNodes[0].textContent =
-                newTask;
+            li.childNodes[0].textContent = newTask;
         }
     });
 
-    // Delete button
-    const deleteBtn =
-        document.createElement("button");
+    // Delete Button
+    const deleteBtn = document.createElement("button");
 
     deleteBtn.textContent = "Delete";
 
@@ -133,14 +132,10 @@ function addTaskToUI(task) {
         li.remove();
 
         let savedTasks =
-            JSON.parse(
-                localStorage.getItem("tasks")
-            ) || [];
+            JSON.parse(localStorage.getItem("tasks")) || [];
 
         savedTasks =
-            savedTasks.filter(
-                t => t !== task
-            );
+            savedTasks.filter(t => t !== task);
 
         localStorage.setItem(
             "tasks",
@@ -148,6 +143,7 @@ function addTaskToUI(task) {
         );
 
         updateTaskCounter();
+        updateEmptyState();
     });
 
     li.appendChild(editBtn);

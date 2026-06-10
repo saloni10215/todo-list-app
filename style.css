@@ -31,8 +31,15 @@ h1 {
 #taskCounter {
     text-align: center;
     color: #6b7280;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     font-size: 14px;
+}
+
+#emptyMessage {
+    text-align: center;
+    color: #9ca3af;
+    margin-bottom: 15px;
+    font-style: italic;
 }
 
 .input-section {
